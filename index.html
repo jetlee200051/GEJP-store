@@ -4,194 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>日本GEJP淨水設備 - 官方商品與據點</title>
-    <!-- 引入 Tailwind CSS 進行美化 -->
-    <script src="https://tailwindcss.com"></script>
     <style>
-        .product-card { transition: all 0.3s ease; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        /* 內建高質感樣式，防阻擋，保證恢復精美排版 */
+        body { font-family: "Helvetica Neue", Arial, "細明體", "Microsoft JhengHei", sans-serif; background-color: #f3f4f6; color: #1f2937; margin: 0; padding: 0; }
+        header { background-color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 50; padding: 15px 20px; }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo-main { font-size: 28px; font-weight: 800; color: #2563eb; letter-spacing: 1px; }
+        .logo-main span { color: #06b6d4; }
+        .logo-sub { font-size: 11px; color: #6b7280; margin-top: 2px; tracking: 2px; }
+        nav a { margin-left: 20px; text-decoration: none; color: #4b5563; font-weight: 500; transition: color 0.2s; }
+        nav a:hover { color: #2563eb; }
+        main { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .banner { background: linear-gradient(to right, #2563eb, #06b6d4); color: #ffffff; padding: 40px; border-radius: 16px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .banner h1 { margin: 0 0 10px 0; font-size: 32px; }
+        .banner p { margin: 0; opacity: 0.9; font-size: 18px; }
+        .filter-container { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .cat-btn { padding: 8px 18px; border-radius: 9999px; border: 1px solid #e5e7eb; background-color: #ffffff; color: #4b5563; cursor: pointer; font-weight: 500; font-size: 14px; transition: all 0.2s; }
+        .cat-btn.active { background-color: #2563eb; color: #ffffff; border-color: #2563eb; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+        .product-card { background-color: #ffffff; border-radius: 12px; border: 1px solid #f3f4f6; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .img-wrapper { height: 180px; background-color: #f9fafb; display: flex; align-items: center; justify-content: center; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
+        .img-wrapper img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .card-cat { font-size: 11px; color: #9ca3af; margin-bottom: 4px; }
+        .card-title { font-size: 15px; font-weight: bold; margin: 0 0 10px 0; color: #1f2937; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 42px; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f9fafb; padding-top: 10px; margin-top: 10px; }
+        .card-price { color: #2563eb; font-weight: bold; font-size: 18px; }
+        .card-more { color: #2563eb; font-size: 12px; font-weight: 500; }
+        .hidden { display: none !important; }
+        
+        /* 詳情內頁樣式 */
+        .detail-box { background-color: #ffffff; border-radius: 16px; padding: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .back-btn { background: none; border: none; color: #2563eb; font-weight: 500; cursor: pointer; font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; }
+        .detail-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media(min-width: 768px) { .detail-grid { grid-template-columns: 1fr 1fr; gap: 40px; } }
+        .detail-img-box { background-color: #f9fafb; border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 300px; }
+        .detail-img-box img { max-h: 380px; max-width: 100%; object-fit: contain; }
+        .detail-info { display: flex; flex-direction: column; justify-content: space-between; }
+        .detail-tag { display: inline-block; padding: 4px 10px; background-color: #eff6ff; color: #2563eb; font-size: 12px; font-weight: 600; border-radius: 9999px; width: fit-content; margin-bottom: 12px; }
+        .detail-name { font-size: 28px; font-weight: bold; margin: 0 0 5px 0; color: #111827; }
+        .detail-id { font-size: 14px; color: #9ca3af; margin-bottom: 15px; }
+        .detail-price { font-size: 30px; font-weight: bold; color: #2563eb; margin-bottom: 20px; }
+        .detail-desc-title { font-size: 14px; font-weight: bold; color: #374151; margin-bottom: 8px; border-top: 1px solid #f3f4f6; padding-top: 15px; }
+        .detail-desc-list { padding-left: 20px; margin: 0 0 25px 0; color: #4b5563; font-size: 14px; line-height: 1.6; }
+        .action-btn { width: 100%; background-color: #2563eb; color: #ffffff; border: none; font-weight: bold; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: background-color 0.2s; text-align: center; }
+        .action-btn:hover { background-color: #1d4ed8; }
+        .specs-section { margin-top: 40px; border-top: 1px solid #f3f4f6; padding-top: 25px; }
+        .specs-table { width: 100%; border-collapse: collapse; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; font-size: 14px; }
+        .specs-table td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; }
+        .specs-label { background-color: #f9fafb; font-weight: 500; color: #111827; width: 30%; border-right: 1px solid #e5e7eb; }
+        
+        /* 據點樣式 */
+        .section-title { text-align: center; margin: 50px 0 30px 0; }
+        .section-title h2 { font-size: 26px; margin: 0 0 5px 0; }
+        .section-title p { color: #6b7280; margin: 0; font-size: 14px; }
+        .store-card { background-color: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #e5e7eb; display: flex; flex-direction: column; justify-content: space-between; }
+        .store-name { font-size: 18px; font-weight: bold; margin: 0 0 10px 0; color: #2563eb; }
+        .store-info { font-size: 14px; color: #4b5563; margin: 0 0 5px 0; line-height: 1.5; }
+        .store-btn { display: block; text-align: center; background-color: #f9fafb; color: #2563eb; text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px; border-radius: 8px; border: 1px solid #eff6ff; margin-top: 15px; transition: background-color 0.2s; }
+        .store-btn:hover { background-color: #eff6ff; }
+        footer { background-color: #111827; color: #9ca3af; text-align: center; padding: 30px 20px; font-size: 12px; margin-top: 60px; line-height: 1.6; }
+        .loading-text { text-align: center; padding: 40px; color: #6b7280; font-size: 15px; grid-column: 1 / -1; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body>
 
-    <!-- 導航欄 / Header (比照原廠 Logo 風格) -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl px-4 py-4 mx-auto flex flex-col items-center justify-between sm:flex-row">
-            <div class="flex flex-col items-center sm:items-start">
-                <!-- 公司大 Logo -->
-                <div class="text-3xl font-extrabold text-blue-600 tracking-wider">G<span class="text-cyan-500">E</span>JP</div>
-                <div class="text-xs text-gray-500 mt-1 tracking-widest">日本技術からの健康に良い水</div>
+    <header>
+        <div class="header-container">
+            <div>
+                <div class="logo-main">G<span>E</span>JP</div>
+                <div class="logo-sub">日本技術からの健康に良い水</div>
             </div>
-            <nav class="flex space-x-6 mt-4 sm:mt-0 font-medium">
-                <a href="#" onclick="showPage('home')" class="text-blue-600 hover:text-blue-800">全站商品</a>
-                <a href="#stores-section" class="text-gray-600 hover:text-blue-600">聯絡據點</a>
+            <nav>
+                <a href="#" onclick="showPage('home'); return false;">全站商品</a>
+                <a href="#stores-section">聯絡據點</a>
             </nav>
         </div>
     </header>
 
-    <!-- 主內容區 -->
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        
-        <!-- ================= 首頁：商品列表頁 ================= -->
+    <main>
+        <!-- ================= 商品列表首頁 ================= -->
         <section id="home-page" class="page-content">
-            <!-- 橫幅公告 -->
-            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-2xl p-8 mb-8 text-center shadow-md">
-                <h1 class="text-2xl sm:text-4xl font-bold mb-2">給家人最純淨的高品質好水</h1>
-                <p class="text-sm sm:text-lg opacity-90">專業銀離子抑菌生飲淨水系統</p>
+            <div class="banner">
+                <h1>給家人最純淨的高品質好水</h1>
+                <p>專業銀離子抑菌生飲淨水系統</p>
             </div>
 
-            <!-- 分類篩選按鈕區 -->
-            <div class="flex flex-wrap gap-2 mb-8" id="category-filters">
-                <button onclick="filterCategory('全部')" class="cat-btn px-4 py-2 rounded-full bg-blue-600 text-white shadow-sm text-sm font-medium">全部商品</button>
+            <div class="filter-container" id="category-filters">
+                <button onclick="filterCategory('全部')" class="cat-btn active">全部商品</button>
             </div>
 
-            <!-- 商品卡片網格 -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="products-container">
-                <div class="text-center py-12 text-gray-500 col-span-full">商品資料加載中...</div>
+            <div class="grid-layout" id="products-container">
+                <div class="loading-text">商品資料加載中，請稍候...</div>
             </div>
         </section>
 
-        <!-- ================= 內頁：商品詳情頁 ================= -->
-        <section id="detail-page" class="page-content hidden bg-white rounded-2xl shadow-sm p-6 md:p-10">
-            <button onclick="showPage('home')" class="mb-6 flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                ← 返回商品列表
-            </button>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                <!-- 左側：商品大圖 -->
-                <div class="flex items-center justify-center bg-gray-100 rounded-xl p-4 min-h-[300px]">
-                    <img id="detail-image" src="" alt="商品圖片" class="max-h-[400px] object-contain rounded-lg">
-                </div>
-                <!-- 右側：商品基本資料 -->
-                <div class="flex flex-col justify-between">
-                    <div>
-                        <span id="detail-category" class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full mb-3">分類</span>
-                        <h2 id="detail-name" class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">商品名稱</h2>
-                        <div id="detail-id" class="text-sm text-gray-400 mb-4">商品型號</div>
-                        <div class="text-3xl font-bold text-blue-600 mb-6" id="detail-price">$0 NTD</div>
-                        
-                        <div class="border-t border-gray-100 pt-4 mb-6">
-                            <h3 class="text-sm font-bold text-gray-700 mb-2">商品特色說明</h3>
-                            <ul id="detail-description" class="list-disc pl-5 text-gray-600 space-y-1 text-sm">
-                                <!-- 動態置入特色 -->
-                            </ul>
-                        </div>
+        <!-- ================= 商品規格詳細內頁 ================= -->
+        <section id="detail-page" class="page-content hidden">
+            <div class="detail-box">
+                <button onclick="showPage('home')" class="back-btn">← 返回商品列表</button>
+                <div class="detail-grid">
+                    <div class="detail-img-box">
+                        <img id="detail-image" src="" alt="商品圖片">
                     </div>
-                    <button class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition shadow-md shadow-blue-100">
-                        立即洽詢 / 加入收藏
-                    </button>
+                    <div class="detail-info">
+                        <div>
+                            <span id="detail-category" class="detail-tag">分類</span>
+                            <h2 id="detail-name" class="detail-name">商品名稱</h2>
+                            <div id="detail-id" class="detail-id">型號編號</div>
+                            <div id="detail-price" class="detail-price">$0 NTD</div>
+                            
+                            <div class="detail-desc-title">商品特色說明</div>
+                            <ul id="detail-description" class="detail-desc-list"></ul>
+                        </div>
+                        <button class="action-btn" onclick="alert('感謝您的洽詢，請聯絡下方各展售據點或客服人員！')">立即洽詢 / 預約體驗</button>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- 下方：詳細商品規格表格 -->
-            <div class="mt-12 border-t border-gray-100 pt-8">
-                <h3 class="text-lg font-bold text-gray-900 mb-4">商品規格</h3>
-                <div class="overflow-hidden border border-gray-200 rounded-xl">
-                    <table class="min-w-full divide-y divide-gray-200 text-sm">
-                        <tbody id="detail-specs-table" class="bg-white divide-y divide-gray-100 text-gray-600">
-                            <!-- 動態生成規格欄位 -->
-                        </tbody>
+                
+                <div class="specs-section">
+                    <h3 style="font-size: 18px; margin: 0 0 15px 0;">詳細商品規格</h3>
+                    <table class="specs-table">
+                        <tbody id="detail-specs-table"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- ================= 服務據點區塊 ================= -->
-        <section id="stores-section" class="mt-16 border-t border-gray-200 pt-12 mb-12">
-            <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-900">服務據點展示中心</h2>
-                <p class="text-gray-500 mt-1 text-sm">歡迎親臨現場體驗最純淨的好水</p>
+        <!-- ================= 服務據點展示區塊 ================= -->
+        <section id="stores-section">
+            <div class="section-title">
+                <h2>服務據點展示中心</h2>
+                <p>歡迎親臨現場體驗最純淨的好水</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="stores-container">
-                <div class="text-center py-6 text-gray-400 col-span-full">據點資料加載中...</div>
+            <div class="grid-layout" id="stores-container">
+                <div class="loading-text">據點資料加載中，請稍候...</div>
             </div>
         </section>
-
     </main>
 
-    <!-- 頁尾 -->
-    <footer class="bg-gray-900 text-gray-400 text-center py-8 text-xs border-t border-gray-800 mt-20">
-        <p class="mb-2">© 2026 日本GEJP淨水設備. All rights reserved.</p>
-        <p>專業銀離子抑菌生飲淨水系統 ｜ 榮獲SGS專案檢測報告</p>
-    </footer>
-
-    <!-- 核心運作 JavaScript 邏輯 -->
-    <script>
-        // 已自動為您配置最新的 Google Apps Script Web App 網址
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbysOWRqeWrZL1VaajDX1gd8MiO_Joiqrq93j1HHgjFRb7-viGsfN7bV1hgZymWUIEoa/exec'; 
-
-        let allProducts = [];
-
-        // 頁面切換控制 (SPA 邏輯)
-        function showPage(pageId) {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
-            document.getElementById(`${pageId}-page`).classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // 初始化：向後端抓取資料
-        async function init() {
-            try {
-                const response = await fetch(GAS_WEB_APP_URL);
-                const data = await response.json();
-                
-                allProducts = data.products || [];
-                renderFilters(allProducts);
-                renderProducts(allProducts);
-                renderStores(data.stores || []);
-            } catch (error) {
-                console.error("資料載入失敗:", error);
-                document.getElementById('products-container').innerHTML = `<div class="text-center py-12 text-red-500 col-span-full">資料載入失敗，請確認 GAS 後端授權與權限設定。</div>`;
-            }
-        }
-
-        // 生成分類篩選按鈕
-        function renderFilters(products) {
-            const categories = ['全部', ...new Set(products.map(p => p.Category).filter(Boolean))];
-            const filterContainer = document.getElementById('category-filters');
-            filterContainer.innerHTML = '';
-            
-            categories.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.className = `cat-btn px-4 py-2 rounded-full text-sm font-medium border transition-all`;
-                if(cat === '全部') {
-                    btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
-                } else {
-                    btn.classList.add('bg-white', 'text-gray-600', 'border-gray-200', 'hover:border-gray-300');
-                }
-                btn.textContent = cat === '全部' ? '全部商品' : cat;
-                btn.onclick = (e) => {
-                    document.querySelectorAll('.cat-btn').forEach(b => {
-                        b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
-                        b.classList.add('bg-white', 'text-gray-600', 'border-gray-200');
-                    });
-                    btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
-                    btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
-                    filterCategory(cat);
-                };
-                filterContainer.appendChild(btn);
-            });
-        }
-
-        // 執行分類過濾
-        function filterCategory(category) {
-            const filtered = category === '全部' ? allProducts : allProducts.filter(p => p.Category === category);
-            renderProducts(filtered);
-        }
-
-        // 渲染商品列表首頁
-        function renderProducts(products) {
-            const container = document.getElementById('products-container');
-            if (products.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-gray-400 col-span-full">目前該分類下沒有商品</div>`;
-                return;
-            }
-            container.innerHTML = '';
-            products.forEach(p => {
-                const imgUrl = p.ImageUrl || 'https://placeholder.com';
-                const card = document.createElement('div');
-                card.className = 'product-card bg-white rounded-xl overflow-hidden border border-gray-100 flex flex-col justify-between cursor-pointer p-4';
-                card.onclick = () => showProductDetail(p);
-                card.innerHTML = `
-                    <div>
-                        <div class="h-48 w-full bg-gray-50 flex items-center justify-center rounded-lg p-2 mb-4">
-                            <img src="${imgUrl}" alt="${p.Name}" class="max-h-full max-w-full object-contain">
-                        </div>
+    <footer>
+        <p style="margin: 0 0 5px 0;">© 2026 日本GEJP淨水設備. All rights reserved.</p>
