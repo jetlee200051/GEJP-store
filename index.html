@@ -1,171 +1,197 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日本GEJP淨水設備 - 商品與據點</title>
-    <!-- 引入 Tailwind CSS 快速排版 -->
-    <script src="https://jsdelivr.net"></script>
+    <title>日本GEJP淨水設備 - 官方商品與據點</title>
+    <!-- 引入 Tailwind CSS 進行美化 -->
+    <script src="https://tailwindcss.com"></script>
     <style>
-        .category-btn.active { @apply bg-blue-600 text-white; }
+        .product-card { transition: all 0.3s ease; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
-    <!-- 導航欄 -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-blue-800 flex items-center gap-2">
-                💧 日本GEJP淨水設備
-            </h1>
-            <div class="space-x-4">
-                <a href="#products-section" class="hover:text-blue-600 font-medium">全站商品</a>
-                <a href="#stores-section" class="hover:text-blue-600 font-medium">聯絡據點</a>
+    <!-- 導航欄 / Header (比照原廠 Logo 風格) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl px-4 py-4 mx-auto flex flex-col items-center justify-between sm:flex-row">
+            <div class="flex flex-col items-center sm:items-start">
+                <!-- 公司大 Logo -->
+                <div class="text-3xl font-extrabold text-blue-600 tracking-wider">G<span class="text-cyan-500">E</span>JP</div>
+                <div class="text-xs text-gray-500 mt-1 tracking-widest">日本技術からの健康に良い水</div>
             </div>
+            <nav class="flex space-x-6 mt-4 sm:mt-0 font-medium">
+                <a href="#" onclick="showPage('home')" class="text-blue-600 hover:text-blue-800">全站商品</a>
+                <a href="#stores-section" class="text-gray-600 hover:text-blue-600">聯絡據點</a>
+            </nav>
         </div>
-    </nav>
-
-    <!-- 主視覺 Banner -->
-    <header class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-16 text-center">
-        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">給家人最純淨的高品質好水</h2>
-        <p class="text-blue-100 text-lg">專業銀離子抑菌生飲淨水系統</p>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-10">
+    <!-- 主內容區 -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
         
-        <!-- 商品區塊 -->
-        <section id="products-section" class="mb-16">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <h3 class="text-2xl font-bold text-gray-900 border-l-4 border-blue-600 pl-3">全站商品</h3>
-                <!-- 分類篩選按鈕列 -->
-                <div id="category-container" class="flex flex-wrap gap-2">
-                    <button onclick="filterCategory('all')" class="category-btn active px-4 py-1.5 rounded-full text-sm font-medium bg-gray-200 hover:bg-gray-300 transition">全部</button>
-                </div>
+        <!-- ================= 首頁：商品列表頁 ================= -->
+        <section id="home-page" class="page-content">
+            <!-- 橫幅公告 -->
+            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-2xl p-8 mb-8 text-center shadow-md">
+                <h1 class="text-2xl sm:text-4xl font-bold mb-2">給家人最純淨的高品質好水</h1>
+                <p class="text-sm sm:text-lg opacity-90">專業銀離子抑菌生飲淨水系統</p>
             </div>
-            
-            <!-- 商品卡片渲染區 -->
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <p class="text-gray-500 col-span-full text-center py-10">商品資料加載中...</p>
+
+            <!-- 分類篩選按鈕區 -->
+            <div class="flex flex-wrap gap-2 mb-8" id="category-filters">
+                <button onclick="filterCategory('全部')" class="cat-btn px-4 py-2 rounded-full bg-blue-600 text-white shadow-sm text-sm font-medium">全部商品</button>
+            </div>
+
+            <!-- 商品卡片網格 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="products-container">
+                <div class="text-center py-12 text-gray-500 col-span-full">商品資料加載中...</div>
             </div>
         </section>
 
-        <!-- 據點區塊 -->
-        <section id="stores-section" class="bg-white rounded-xl shadow-sm p-6 md:p-8">
-            <h3 class="text-2xl font-bold text-gray-900 border-l-4 border-blue-600 pl-3 mb-8">服務據點</h3>
-            <!-- 據點卡片渲染區 -->
-            <div id="stores-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <p class="text-gray-500 col-span-full text-center py-4">據點資料加載中...</p>
+        <!-- ================= 內頁：商品詳情頁 ================= -->
+        <section id="detail-page" class="page-content hidden bg-white rounded-2xl shadow-sm p-6 md:p-10">
+            <button onclick="showPage('home')" class="mb-6 flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                ← 返回商品列表
+            </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <!-- 左側：商品大圖 -->
+                <div class="flex items-center justify-center bg-gray-100 rounded-xl p-4 min-h-[300px]">
+                    <img id="detail-image" src="" alt="商品圖片" class="max-h-[400px] object-contain rounded-lg">
+                </div>
+                <!-- 右側：商品基本資料 -->
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <span id="detail-category" class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full mb-3">分類</span>
+                        <h2 id="detail-name" class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">商品名稱</h2>
+                        <div id="detail-id" class="text-sm text-gray-400 mb-4">商品型號</div>
+                        <div class="text-3xl font-bold text-blue-600 mb-6" id="detail-price">$0 NTD</div>
+                        
+                        <div class="border-t border-gray-100 pt-4 mb-6">
+                            <h3 class="text-sm font-bold text-gray-700 mb-2">商品特色說明</h3>
+                            <ul id="detail-description" class="list-disc pl-5 text-gray-600 space-y-1 text-sm">
+                                <!-- 動態置入特色 -->
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition shadow-md shadow-blue-100">
+                        立即洽詢 / 加入收藏
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 下方：詳細商品規格表格 -->
+            <div class="mt-12 border-t border-gray-100 pt-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">商品規格</h3>
+                <div class="overflow-hidden border border-gray-200 rounded-xl">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                        <tbody id="detail-specs-table" class="bg-white divide-y divide-gray-100 text-gray-600">
+                            <!-- 動態生成規格欄位 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 服務據點區塊 ================= -->
+        <section id="stores-section" class="mt-16 border-t border-gray-200 pt-12 mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-900">服務據點展示中心</h2>
+                <p class="text-gray-500 mt-1 text-sm">歡迎親臨現場體驗最純淨的好水</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="stores-container">
+                <div class="text-center py-6 text-gray-400 col-span-full">據點資料加載中...</div>
             </div>
         </section>
 
     </main>
 
     <!-- 頁尾 -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm mt-20">
-        <p>© 2026 日本GEJP淨水設備. All rights reserved.</p>
+    <footer class="bg-gray-900 text-gray-400 text-center py-8 text-xs border-t border-gray-800 mt-20">
+        <p class="mb-2">© 2026 日本GEJP淨水設備. All rights reserved.</p>
+        <p>專業銀離子抑菌生飲淨水系統 ｜ 榮獲SGS專案檢測報告</p>
     </footer>
 
-    <!-- 前端渲染邏輯 JavaScript -->
+    <!-- 核心運作 JavaScript 邏輯 -->
     <script>
-        // ⚠️ 請在此處替換成您自己的 Google Apps Script 網頁應用程式網址
-        const API_URL = 'https://script.google.com/macros/s/AKfycbysOWRqeWrZL1VaajDX1gd8MiO_Joiqrq93j1HHgjFRb7-viGsfN7bV1hgZymWUIEoa/exec';
-        
+        // 已自動為您配置最新的 Google Apps Script Web App 網址
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbysOWRqeWrZL1VaajDX1gd8MiO_Joiqrq93j1HHgjFRb7-viGsfN7bV1hgZymWUIEoa/exec'; 
+
         let allProducts = [];
 
-        // 網頁開啟後自動抓取後端資料
+        // 頁面切換控制 (SPA 邏輯)
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`${pageId}-page`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 初始化：向後端抓取資料
         async function init() {
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch(GAS_WEB_APP_URL);
                 const data = await response.json();
                 
-                allProducts = data.products;
-                renderCategories(allProducts);
+                allProducts = data.products || [];
+                renderFilters(allProducts);
                 renderProducts(allProducts);
-                renderStores(data.stores);
+                renderStores(data.stores || []);
             } catch (error) {
-                console.error("資料讀取失敗:", error);
-                document.getElementById('products-grid').innerHTML = '<p class="text-red-500 text-center col-span-full">無法讀取資料，請檢查後端設定。</p>';
+                console.error("資料載入失敗:", error);
+                document.getElementById('products-container').innerHTML = `<div class="text-center py-12 text-red-500 col-span-full">資料載入失敗，請確認 GAS 後端授權與權限設定。</div>`;
             }
         }
 
-        // 動態生成分類按鈕
-        function renderCategories(products) {
-            const container = document.getElementById('category-container');
-            const categories = ['all', ...new Set(products.map(p => p.Category).filter(Boolean))];
+        // 生成分類篩選按鈕
+        function renderFilters(products) {
+            const categories = ['全部', ...new Set(products.map(p => p.Category).filter(Boolean))];
+            const filterContainer = document.getElementById('category-filters');
+            filterContainer.innerHTML = '';
             
-            container.innerHTML = categories.map(cat => {
-                const isAll = cat === 'all';
-                return `<button onclick="filterCategory('${cat}', this)" class="category-btn ${isAll ? 'active bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'} px-4 py-1.5 rounded-full text-sm font-medium hover:bg-blue-500 hover:text-white transition">${isAll ? '全部' : cat}</button>`;
-            }).join('');
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `cat-btn px-4 py-2 rounded-full text-sm font-medium border transition-all`;
+                if(cat === '全部') {
+                    btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
+                } else {
+                    btn.classList.add('bg-white', 'text-gray-600', 'border-gray-200', 'hover:border-gray-300');
+                }
+                btn.textContent = cat === '全部' ? '全部商品' : cat;
+                btn.onclick = (e) => {
+                    document.querySelectorAll('.cat-btn').forEach(b => {
+                        b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
+                        b.classList.add('bg-white', 'text-gray-600', 'border-gray-200');
+                    });
+                    btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
+                    btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-sm');
+                    filterCategory(cat);
+                };
+                filterContainer.appendChild(btn);
+            });
         }
 
-        // 篩選分類邏輯
-        function filterCategory(category, btnElement) {
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
-            if(btnElement) {
-                btnElement.classList.add('active', 'bg-blue-600', 'text-white');
-            }
-            
-            const filtered = category === 'all' ? allProducts : allProducts.filter(p => p.Category === category);
+        // 執行分類過濾
+        function filterCategory(category) {
+            const filtered = category === '全部' ? allProducts : allProducts.filter(p => p.Category === category);
             renderProducts(filtered);
         }
 
-        // 渲染商品卡片
+        // 渲染商品列表首頁
         function renderProducts(products) {
-            const grid = document.getElementById('products-grid');
-            if(products.length === 0) {
-                grid.innerHTML = '<p class="text-gray-500 text-center col-span-full">暫無商品</p>';
+            const container = document.getElementById('products-container');
+            if (products.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-gray-400 col-span-full">目前該分類下沒有商品</div>`;
                 return;
             }
-            
-            grid.innerHTML = products.map(p => `
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition flex flex-col">
-                    <div class="h-56 bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="${p.ImageUrl || 'https://placehold.co'}" alt="${p.Name}" class="object-cover w-full h-full hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co'">
-                    </div>
-                    <div class="p-5 flex-1 flex flex-col justify-between">
-                        <div>
-                            <span class="inline-block px-2.5 py-0.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded mb-2">${p.Category || '一般'}</span>
-                            <h4 class="font-bold text-gray-900 text-base line-clamp-2 mb-2">${p.Name}</h4>
+            container.innerHTML = '';
+            products.forEach(p => {
+                const imgUrl = p.ImageUrl || 'https://placeholder.com';
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white rounded-xl overflow-hidden border border-gray-100 flex flex-col justify-between cursor-pointer p-4';
+                card.onclick = () => showProductDetail(p);
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 w-full bg-gray-50 flex items-center justify-center rounded-lg p-2 mb-4">
+                            <img src="${imgUrl}" alt="${p.Name}" class="max-h-full max-w-full object-contain">
                         </div>
-                        <div class="mt-4 flex items-baseline gap-2">
-                            <span class="text-xl font-extrabold text-red-600">$${Number(p.Price).toLocaleString()}</span>
-                            ${p.OriginalPrice ? `<span class="text-sm text-gray-400 line-through">$${Number(p.OriginalPrice).toLocaleString()}</span>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // 渲染據點卡片（點擊地址直接調轉至 Google 地圖）
-        function renderStores(stores) {
-            const grid = document.getElementById('stores-grid');
-            if(!stores || stores.length === 0) {
-                grid.innerHTML = '<p class="text-gray-500 text-center col-span-full">暫無據點資訊</p>';
-                return;
-            }
-            
-            grid.innerHTML = stores.map(s => `
-                <div class="border border-gray-100 bg-gray-50 rounded-xl p-5 hover:border-blue-200 transition">
-                    <h4 class="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                        📍 ${s.StoreName}
-                    </h4>
-                    <div class="space-y-2 text-sm text-gray-600 mb-4">
-                        <p><strong>電話：</strong><a href="tel:${s.Phone}" class="text-blue-600 hover:underline">${s.Phone}</a></p>
-                        <p><strong>地址：</strong>${s.Address}</p>
-                    </div>
-                    <a href="https://google.com{encodeURIComponent(s.Address)}" 
-                       target="_blank" 
-                       class="inline-flex items-center justify-center w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm shadow-sm transition gap-2">
-                       🗺️ 開啟 Google 地圖查看
-                    </a>
-                </div>
-            `).join('');
-        }
-
-        // 啟動網頁
-        init();
-    </script>
-</body>
-</html>
